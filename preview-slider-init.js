@@ -5,7 +5,6 @@ window.addEventListener('load', function(event) {
 
 	previewSliderInit({
 		listClass: 'list',
-		listWrapClass: 'listWrap',
 		nextArrowText: '>',
 		prevArrowText: '<'
 	});

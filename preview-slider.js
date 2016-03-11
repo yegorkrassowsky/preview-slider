@@ -2,9 +2,8 @@ function previewSliderInit(sliderInitOpts) {
 
 	var 
 		listClass = sliderInitOpts.listClass || 'preview-slider',
-		listWrapClass = sliderInitOpts.listWrapClass || 'preview-slider-container',
 		list = document.querySelector('.' + listClass),
-		container = document.querySelector('.' + listWrapClass),
+		container = list.parentElement,
 		items = list.children,
 		itemsNumber = items.length,
 		itemWidth = items[0].offsetWidth,
