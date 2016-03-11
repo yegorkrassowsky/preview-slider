@@ -1,27 +1,21 @@
 function previewSliderInit(sliderInitOpts) {
 
-	var 
-		listClass = sliderInitOpts.listClass || 'preview-slider',
+	var listClass = sliderInitOpts.listClass || 'preview-slider',
+		listStep = sliderInitOpts.listStep || 1,
 		list = document.querySelector('.' + listClass),
 		container = list.parentElement,
 		items = list.children,
 		itemsNumber = items.length,
-		itemWidth = items[0].offsetWidth,
-		itemsCount = Math.floor(container.clientWidth / itemWidth),
-		itemsOffset = Math.round((container.clientWidth - itemsCount * itemWidth) / (itemsCount + 1));
-
-		itemWidth += itemsOffset;
-		
-		for (var i = 0; i < itemsNumber; i++) {
-			items[i].style.marginLeft = itemsOffset  + 'px';
-		}
+		itemStyle = getComputedStyle(items[0]),
+		itemWidth = parseInt(itemStyle.width) + parseInt(itemStyle.marginLeft) + parseInt(itemStyle.marginRight),
+		itemsCount = Math.floor(container.clientWidth / itemWidth);
 				
 	if(itemsNumber > itemsCount) {
 			
 		var arrowLeft = document.createElement('span'),
 			arrowRight = document.createElement('span'),			
 			listWidth = itemsNumber * itemWidth,
-			step = itemWidth,
+			step = itemWidth * listStep,
 			pos = 0;
 			
 		arrowLeft.className = listClass + '-arrow' + ' ' + listClass + '-arrow-left';
@@ -34,7 +28,7 @@ function previewSliderInit(sliderInitOpts) {
 		list.style.left = 0;
 		
 		arrowRight.addEventListener('click', function(event){
-			if(pos < listWidth - step * itemsCount) {
+			if(pos < listWidth - itemWidth * itemsCount) {
 			list.style.left = parseInt(list.style.left) - step + 'px';
 			pos += step;
 			}
