@@ -18,6 +18,7 @@ function previewSliderInit(sliderInitOpts) {
 			listWidth = itemsNumber * itemWidth,
 			listFrameWidth = itemWidth * itemsCount,
 			step = itemWidth * listStep,
+			stepRatio = 1,
 			isDragReady = false,
 			dragoffset,
 			pos = 0;
@@ -34,15 +35,15 @@ function previewSliderInit(sliderInitOpts) {
 		
 		function moveRight(){
 			if(pos < listWidth - listFrameWidth) {
-				list.style.left = parseInt(list.style.left) - step + 'px';
-				pos += step;
+				list.style.left = parseInt(list.style.left) - step * stepRatio + 'px';
+				pos += step * stepRatio;
 			}			
 		}
 		
 		function moveLeft(){
 			if(pos) {
-				list.style.left = parseInt(list.style.left) + step + 'px';
-				pos -= step;
+				list.style.left = parseInt(list.style.left) + step * stepRatio + 'px';
+				pos -= step * stepRatio;
 			}			
 		}
 		
@@ -57,7 +58,7 @@ function previewSliderInit(sliderInitOpts) {
 			items[i].addEventListener('mousedown', function(e){
 				list.classList.remove('animated');
 				isDragReady = true;
-				e.pageX = e.pageX || e.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
+/* 				e.pageX = e.pageX || e.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft); */
 				dragoffset = e.pageX - list.offsetLeft;			
 			});
 		}
@@ -65,20 +66,25 @@ function previewSliderInit(sliderInitOpts) {
 		document.addEventListener('mouseup', function(e){
 			if(isDragReady){
 				list.classList.add('animated');
-				e.pageX = e.pageX || e.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
+/* 				e.pageX = e.pageX || e.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft); */
 				list.style.left = '-' + pos + 'px';
-				if(e.pageX - dragoffset + pos < 0) {
+				if(Math.abs(e.pageX - dragoffset + pos) > step){
+					stepRatio = Math.floor(Math.abs(e.pageX - dragoffset + pos) / step);
+				}
+				if(e.pageX - dragoffset + pos < -20) {
 					moveRight();
-				} else {
+				} else if(e.pageX - dragoffset + pos > 20){
 					moveLeft();
 				}
+				console.log(stepRatio);
+				stepRatio = 1;
 				isDragReady = false;
 			}
 		});
 
 		document.addEventListener('mousemove', function(e){
 			if(isDragReady){
-				e.pageX = e.pageX || e.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
+/* 				e.pageX = e.pageX || e.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft); */
 				if((Math.abs(e.pageX - dragoffset) < listWidth - listFrameWidth + listBreakOffset) && (e.pageX - dragoffset < listBreakOffset)) {
 		        	list.style.left = (e.pageX - dragoffset) + 'px';
 		        }
