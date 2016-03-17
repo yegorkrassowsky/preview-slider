@@ -21,9 +21,7 @@ function previewSliderInit(sliderInitOpts) {
 			isDragReady = false,
 			dragoffset,
 			pos = 0,
-			endPos = listWidth - listFrameWidth; // Wrong if step > 1 and last frame isn't full. Need a fix.
-/* 			endPos = listStep == 1 ? listWidth - listFrameWidth : Math.floor(listWidth / step + 1) * itemWidth; */
-			console.log();
+			endPos = itemsNumber % listStep + itemsCount % listStep == 0 ? listWidth - listFrameWidth : Math.floor(itemsNumber / itemsCount) * listFrameWidth;
 			
 		arrowLeft.className = listClass + '-arrow' + ' ' + listClass + '-arrow-left';
 		arrowRight.className = listClass + '-arrow' + ' ' + listClass + '-arrow-right';
