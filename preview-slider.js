@@ -18,10 +18,12 @@ function previewSliderInit(sliderInitOpts) {
 			listWidth = itemsNumber * itemWidth,
 			listFrameWidth = itemWidth * itemsCount,
 			step = itemWidth * listStep,
-			stepRatio = 1,
 			isDragReady = false,
 			dragoffset,
-			pos = 0;
+			pos = 0,
+			endPos = listWidth - listFrameWidth; // Wrong if step > 1 and last frame isn't full. Need a fix.
+/* 			endPos = listStep == 1 ? listWidth - listFrameWidth : Math.floor(listWidth / step + 1) * itemWidth; */
+			console.log();
 			
 		arrowLeft.className = listClass + '-arrow' + ' ' + listClass + '-arrow-left';
 		arrowRight.className = listClass + '-arrow' + ' ' + listClass + '-arrow-right';
@@ -34,16 +36,16 @@ function previewSliderInit(sliderInitOpts) {
 		list.classList.add('animated');
 		
 		function moveRight(){
-			if(pos < listWidth - listFrameWidth) {
-				list.style.left = parseInt(list.style.left) - step * stepRatio + 'px';
-				pos += step * stepRatio;
+			if(pos < endPos) {
+				list.style.left = parseInt(list.style.left) - step + 'px';
+				pos += step;
 			}			
 		}
 		
 		function moveLeft(){
 			if(pos) {
-				list.style.left = parseInt(list.style.left) + step * stepRatio + 'px';
-				pos -= step * stepRatio;
+				list.style.left = parseInt(list.style.left) + step + 'px';
+				pos -= step;
 			}			
 		}
 		
@@ -65,19 +67,35 @@ function previewSliderInit(sliderInitOpts) {
 				
 		document.addEventListener('mouseup', function(e){
 			if(isDragReady){
+				var dragStep = Math.floor(Math.abs(e.pageX - dragoffset + pos) / step) * step;
 				list.classList.add('animated');
 /* 				e.pageX = e.pageX || e.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft); */
 				list.style.left = '-' + pos + 'px';
-				if(Math.abs(e.pageX - dragoffset + pos) > step){
-					stepRatio = Math.floor(Math.abs(e.pageX - dragoffset + pos) / step);
-				}
 				if(e.pageX - dragoffset + pos < -20) {
-					moveRight();
+					if(dragStep > step){
+						if(dragStep + pos >= endPos){
+							list.style.left = '-' + endPos + 'px';
+							pos = endPos;
+						} else {
+							list.style.left = parseInt(list.style.left) - dragStep + 'px';
+							pos += dragStep;
+						}
+					} else {
+						moveRight();
+					}
 				} else if(e.pageX - dragoffset + pos > 20){
-					moveLeft();
+					if(dragStep > step){
+						if(pos - dragStep <= 0){
+							list.style.left = 0;
+							pos = 0;
+						} else {
+							list.style.left = parseInt(list.style.left) + dragStep + 'px';
+							pos -= dragStep;
+						}
+					} else {
+						moveLeft();
+					}
 				}
-				console.log(stepRatio);
-				stepRatio = 1;
 				isDragReady = false;
 			}
 		});
@@ -85,7 +103,7 @@ function previewSliderInit(sliderInitOpts) {
 		document.addEventListener('mousemove', function(e){
 			if(isDragReady){
 /* 				e.pageX = e.pageX || e.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft); */
-				if((Math.abs(e.pageX - dragoffset) < listWidth - listFrameWidth + listBreakOffset) && (e.pageX - dragoffset < listBreakOffset)) {
+				if((Math.abs(e.pageX - dragoffset) < endPos + listBreakOffset) && (e.pageX - dragoffset < listBreakOffset)) {
 		        	list.style.left = (e.pageX - dragoffset) + 'px';
 		        }
 			}
