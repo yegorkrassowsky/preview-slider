@@ -6,8 +6,8 @@ window.addEventListener('load', function(event) {
 
 	previewSliderInit({
 		listClass: 'list',
-		nextArrowText: '>',
-		prevArrowText: '<',
+		nextArrowText: '+',
+		prevArrowText: '–',
 	});
 
 
