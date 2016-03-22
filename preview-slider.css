@@ -1,11 +1,13 @@
 * {box-sizing: border-box;}
 body {margin: 0; background-color: #404040;}
 .preview-slider-container, .listWrap {background-color: #606060; border: 1px solid black; width: 654px; position: relative; height: 120px; overflow: hidden; margin-top: 50px; -webkit-transform: translateX(-50%); transform: translateX(-50%); left: 50%; border-radius: 5px;}
-.preview-slider, .list {list-style: none;height: 100%; padding: 0; margin: 0; position: absolute; }
+.preview-slider, .list {list-style: none;height: 100%; padding: 0; margin: 0; position: absolute; cursor: pointer;}
 .preview-slider li {width: 170px; height: 100px; background-color: black; margin-top: 10px; margin-left: 36px; float: left;}
+
 .list div {width: 150px; height: 100px; background-color: black; margin-top: 10px; margin-left: 11px; float: left;}
 .preview-slider li img, .list div img {width: 100%; height: 100%;}
 .animated {-webkit-transition: left 0.5s; -moz-transition: left 0.5s;transition: left 0.5s;}
+.ondrag {cursor:move;cursor:-webkit-grabbing;cursor:-o-grabbing;cursor:-ms-grabbing;cursor:grabbing}
 
 /*---Arrows---*/
 

@@ -57,8 +57,8 @@ function previewSliderInit(sliderInitOpts) {
 		for (var i = 0; i < itemsNumber; i++){
 			items[i].addEventListener('mousedown', function(e){
 				list.classList.remove('animated');
+				list.classList.add('ondrag');
 				isDragReady = true;
-/* 				e.pageX = e.pageX || e.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft); */
 				dragoffset = e.pageX - list.offsetLeft;			
 			});
 		}
@@ -67,7 +67,7 @@ function previewSliderInit(sliderInitOpts) {
 			if(isDragReady){
 				var dragStep = Math.floor(Math.abs(e.pageX - dragoffset + pos) / step) * step;
 				list.classList.add('animated');
-/* 				e.pageX = e.pageX || e.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft); */
+				list.classList.remove('ondrag');
 				list.style.left = '-' + pos + 'px';
 				if(e.pageX - dragoffset + pos < -20) {
 					if(dragStep > step){
@@ -100,7 +100,6 @@ function previewSliderInit(sliderInitOpts) {
 
 		document.addEventListener('mousemove', function(e){
 			if(isDragReady){
-/* 				e.pageX = e.pageX || e.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft); */
 				if((Math.abs(e.pageX - dragoffset) < endPos + listBreakOffset) && (e.pageX - dragoffset < listBreakOffset)) {
 		        	list.style.left = (e.pageX - dragoffset) + 'px';
 		        }
